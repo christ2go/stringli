@@ -1,0 +1,207 @@
+(fn 
+	(square x)
+	(
+		(return (mult x x))
+	)
+	
+)
+
+(fn 
+	(strreverse x)
+	(ifelse (equalp  
+			(length x) 0
+		)
+		(
+			(return x)
+		)
+		(
+			(set "m" (last x))
+			(return (concat m (strreverse (butlast x)))
+		)
+	)
+)
+)
+
+
+
+
+(fn 
+	; s ist der String
+	; v die gewünschte Verschiebung
+	(caesar s v)
+	(
+		(ifelse (equalp (length s) 0)
+			(
+				(return "")
+			)
+			(
+				(set "currchar" (first s))
+			)
+		)	
+	)
+)
+
+
+(print
+	(strreverse "hallo funktionales programmieren ist fun")
+)
+(fn 
+	(enternumbers liste counter read)
+	(
+	(print counter)
+		(ifelse (not (equalp counter 0))
+			(	
+				(ifelse read 
+					(
+						(print "Reading")
+						(set "nbr" (readline "Bitte gib eine Zahl ein: "))
+					)
+					(
+						(set "nbr" (random 0 1000))
+					)
+				)	
+				(ifelse (numberp nbr)
+					(
+						(return (enternumbers (append liste nbr) (sub counter 1) read))
+					)
+					(
+						(return (enternumbers liste counter read))
+					)
+				)
+			)
+			(
+				(return liste)
+			)
+		)		
+	)
+)
+
+(fn
+	(findtwoswap liste i res)
+	(
+		(if (equalp 
+				i
+				(length liste)
+			)
+			((return res))
+		)
+		(print i)		
+		(if 
+			(not
+				(lessp 
+					(item liste i)
+					(item liste  (add 1 i))
+				)
+			)	
+			(
+				(return 
+					(findtwoswap 
+						liste
+						(add i 1)
+						(append 
+							res
+							(list i 
+								(add i 1)
+							)
+						)
+					)
+				)
+			)
+		)
+		(return (findtwoswap liste (add i 1) res))
+	)
+)	
+(fn
+	(first x)
+	(
+		(return (item x 1))
+	)
+)
+(fn
+	(swap swaplist liste i neueliste)
+	(
+		(print neueliste)
+		(print i)
+		(if (and (lesseqp
+				(length liste)
+				i
+			)
+			(not (equalp
+				(length neueliste)
+				(length liste)
+				)
+			))
+			(
+				(set "neueliste" (append neueliste (last liste)))
+			)
+			)
+		(if (lesseqp
+				(length liste)
+				i
+			)
+			(
+			
+				(return neueliste)
+			)
+		)
+		
+		(ifelse 
+			(equalp
+				(first (first swaplist))
+				i
+			)
+			
+			(
+				(return (swap 
+					(bf swaplist)
+					liste
+					(add i 2)
+					(append (append neueliste (item liste  (add i 1) ) )
+							(item liste i ))
+					)
+				)
+			)
+			(
+				(return 
+					(swap 
+					 	swaplist
+						liste
+						(add i 1)
+						(append neueliste (item liste i) )
+					)
+				)
+			)
+		
+	)
+)
+)
+
+(fn
+	(bubblesort liste)
+	(
+		(set "swapped" #t )
+		(print liste)
+		(set "swaplist" (findtwoswap liste 1 (list ) ) )
+		(print "Zu tauschen")
+		(print swaplist)
+		(if (equalp (length swaplist) 0)
+			(
+				(set "swapped" #f)
+				(return liste)
+			)
+		)
+		 
+		(set "liste" (swap swaplist liste 1 (list) ) )
+		(return (bubblesort liste)
+		)
+		
+	)
+)
+(print
+	(ord "C")
+)
+
+(set "num" (readline "Wie viele Zahlen sollen sortiert werden?"))
+(set "liste" (enternumbers (list) num 0))
+(print liste)
+(print (bubblesort liste))
